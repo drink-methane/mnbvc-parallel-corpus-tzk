@@ -8,7 +8,7 @@ import pysubs2
 # from charset_mnbvc import api
 import re
 
-directory = r"D:\MNBVC\DisasterBand"
+directory = r"D:\MNBVC\OxygenNotIncluded"
 
 for root, dirs, files in os.walk(directory):
     for file in files:
@@ -181,6 +181,29 @@ for root, dirs, files in os.walk(directory):
             os.remove(file_path)
         elif file_path.endswith('.uasset'):#处理uasset文件
             os.remove(file_path)
+        elif file_path.endswith('.po'):#处理po文件
+            try:
+                with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
+                    content = f.read()#content是str！
+                lines = content.splitlines()#lines是包含每一行的一个列表
+                for line in lines:
+                    if 'msgid' in line:
+                        key = re.sub(r'<[^>]+>(.*?)</[^>]+>', r'\1', line.split('"')[1], flags=re.DOTALL)#用正则表达式去除<>以及当中的内容。
+                    elif 'msgstr' in line:
+                        value = re.sub(r'<[^>]+>(.*?)</[^>]+>', r'\1', line.split('"')[1], flags=re.DOTALL)
+                        result_dict[key.strip()] = value.strip()# 将键值对添加到字典中
+                        key = ""
+                        value = ""
+                    else:
+                        pass#result_dict是一个对好的字典
+                with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
+                    json.dump(result_dict, f, ensure_ascii=False, indent=4)
+                os.remove(file_path)
+                print("成")
+            except Exception as e:
+                print("寄")
+                print(file_path)
+                break
         # elif file_path.endswith('.json'):#处理json文件
         #     try:
         #         key_l = []#需要添加文件等信息。
