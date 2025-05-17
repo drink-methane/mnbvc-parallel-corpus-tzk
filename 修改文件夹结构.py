@@ -64,8 +64,29 @@ def to_the_out_folder(source):
                 shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\MNBVC\Mirror2ProjectX"
+'''
+这个函数是用于处理文件结构的。
+假设每一个文件名的按照此规律：xxx_languages，则可以用这个函数。
+'''
+def do(source, target):
+    for root, dirs, files in os.walk(source):
+        for file in files:
+            file_path = os.path.join(root, file)#原文件的位置
+            sourc = [i for i, char in enumerate(file_path) if char == '\\']
+            parts = file_path.split('\\')
+            lan = parts[-1].split('_')[1]
+            name = parts[-1].split('_')[0]
+            sectarget = os.path.join(target, name)#目标文件夹的位置
+            fintarget = os.path.join(target, name, lan + ".json")#目标文件的位置
+            print(fintarget)
+            if not os.path.exists(sectarget):
+                os.makedirs(sectarget)
+            shutil.copy(file_path, fintarget)
+    return 0
+
+source = r"D:\MNBVC\DisasterBand"
 target = r"D:\sandbox\data"
 # to_the_out_folder(source)
 # different_folder(source, target)
-# same_folder(source, target)
+same_folder(source, target)
+# do(source, target)

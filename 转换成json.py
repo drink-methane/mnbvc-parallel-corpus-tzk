@@ -8,7 +8,7 @@ import pysubs2
 # from charset_mnbvc import api
 import re
 
-directory = r"D:\MNBVC\Mirror2ProjectX"
+directory = r"D:\MNBVC\DisasterBand"
 
 for root, dirs, files in os.walk(directory):
     for file in files:
@@ -45,9 +45,13 @@ for root, dirs, files in os.walk(directory):
                     content = f.read()#content是str！
                 lines = content.splitlines()#lines是包含每一行的一个列表
                 for line in lines:
-                    if '*' in line:
-                        key, value = line.split('*', 1)# 使用split方法以等号为分隔符分割字符串
+                    if 'msgid' in line:
+                        key = line.split('"')[1]
+                    elif 'msgstr' in line:
+                        value = line.split('"')[1]# 使用split方法以等号为分隔符分割字符串
                         result_dict[key.strip()] = value.strip()# 将键值对添加到字典中
+                        key = ""
+                        value = ""
                     else:
                         pass#result_dict是一个对好的字典
                 with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
