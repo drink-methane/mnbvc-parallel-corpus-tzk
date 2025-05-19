@@ -8,7 +8,7 @@ import pysubs2
 # from charset_mnbvc import api
 import re
 
-directory = r"D:\MNBVC\OxygenNotIncluded"
+directory = r"D:\MNBVC\DysonSphereProgram"
 
 for root, dirs, files in os.walk(directory):
     for file in files:
@@ -45,10 +45,13 @@ for root, dirs, files in os.walk(directory):
                     content = f.read()#content是str！
                 lines = content.splitlines()#lines是包含每一行的一个列表
                 for line in lines:
-                    if 'msgid' in line:
-                        key = line.split('"')[1]
-                    elif 'msgstr' in line:
-                        value = line.split('"')[1]# 使用split方法以等号为分隔符分割字符串
+                    # 正则表达式匹配模式，处理前导和尾随空格，并提取三部分
+                    pattern = r'^\s*(\S+)\s+(\d)\s+(.*)\s*$'
+                    match = re.match(pattern, line)
+                    if match:
+                        key = match.group(1)
+                        value = match.group(3)
+                        print(key,"  ",value)
                         result_dict[key.strip()] = value.strip()# 将键值对添加到字典中
                         key = ""
                         value = ""

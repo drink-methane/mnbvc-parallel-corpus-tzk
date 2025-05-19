@@ -8,14 +8,14 @@ import subprocess
 LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中，如果有组合数据，应该考虑用dict
     'zh':('简体中文','zh_text'), # 如果需要语言重命名，或者打印语言信息，可以像这样把每个语言的设置拆成 tuple 来写。这个表的意义是建立语言的映射关系
     'en':('英文','en_text'),
-    # 'fr':('法语','fr_text'),
-    # 'de':('德语','de_text'),
+    'fr':('法语','fr_text'),
+    'de':('德语','de_text'),
     # 'it':('意大利语','it_text'),
-    # 'ja':('日语','ja_text'),
+    'ja':('日语','ja_text'),
     'ko':('韩语','ko_text'),
     # 'Polish':('波兰语','pl'), # 填扩展字段里
     # 'Portuguese':('葡萄牙语','pt_text'),
-    'ru':('俄语','ru_text'),
+    # 'ru':('俄语','ru_text'),
     # 'es':('西班牙语','es_text'),
     # 'ind':('印尼语','id_text'),
     # 'nor':('挪威语','no'), # 填扩展字段里
@@ -36,7 +36,7 @@ LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中�
     # 'hu':('匈牙利语','hu')# 填扩展字段里
 }
 mate_dir = Path(r"D:\sandbox\data")
-filename = "OxygenNotIncluded.jsonl"
+filename = "DysonSphereProgram.jsonl"
 max_lines = 500000
 max_size = 512
 

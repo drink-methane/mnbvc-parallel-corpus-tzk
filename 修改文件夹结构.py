@@ -84,9 +84,9 @@ def do(source, target):
             shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\MNBVC\OxygenNotIncluded"
+source = r"D:\MNBVC\DysonSphereProgram"
 target = r"D:\sandbox\data"
 # to_the_out_folder(source)
-# different_folder(source, target)
-same_folder(source, target)
+different_folder(source, target)
+# same_folder(source, target)
 # do(source, target)
