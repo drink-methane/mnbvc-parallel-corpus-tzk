@@ -65,8 +65,7 @@ def to_the_out_folder(source):
     return 0
 
 '''
-这个函数是用于处理文件结构的。
-假设每一个文件名的按照此规律：xxx_languages，则可以用这个函数。
+根据文件名分类、重命名。
 '''
 def do(source, target):
     for root, dirs, files in os.walk(source):
@@ -74,8 +73,11 @@ def do(source, target):
             file_path = os.path.join(root, file)#原文件的位置
             sourc = [i for i, char in enumerate(file_path) if char == '\\']
             parts = file_path.split('\\')
-            lan = parts[-1].split('_')[1]
-            name = parts[-1].split('_')[0]
+            if "-" not in parts[-1]:
+                lan = "en"
+            else:
+                lan = parts[-1].split('.')[1]
+            name = parts[-1].split('.')[0]
             sectarget = os.path.join(target, name)#目标文件夹的位置
             fintarget = os.path.join(target, name, lan + ".json")#目标文件的位置
             print(fintarget)
@@ -84,9 +86,9 @@ def do(source, target):
             shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\MNBVC\DysonSphereProgram"
-target = r"D:\sandbox\data"
+source = r"D:\sandbox\data"
+target = r"D:\sandbox\data1"
 # to_the_out_folder(source)
-different_folder(source, target)
+# different_folder(source, target)
 # same_folder(source, target)
 # do(source, target)

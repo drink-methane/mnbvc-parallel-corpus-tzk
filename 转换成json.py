@@ -8,7 +8,7 @@ import pysubs2
 # from charset_mnbvc import api
 import re
 
-directory = r"D:\MNBVC\DysonSphereProgram"
+directory = r"D:\sandbox\data"
 
 for root, dirs, files in os.walk(directory):
     for file in files:
@@ -207,56 +207,49 @@ for root, dirs, files in os.walk(directory):
                 print("寄")
                 print(file_path)
                 break
-        # elif file_path.endswith('.json'):#处理json文件
-        #     try:
-        #         key_l = []#需要添加文件等信息。
-        #         result_dict = {}
-        #         # def pro(content, key_l):
-        #         #     '''
-        #         #     content: 得到的内容。
-        #         #     key_l: 一个列表，用于生成最后文件当中每一个键值对的key。
-        #         #     用来处理一个列表或者字典。
-        #         #     '''
-        #         #     global result_dict
-        #         #     key = '_'.join(key_l)
-        #         #     if isinstance(content, str):
-        #         #         if ": " in content:
-        #         #             result_dict[key] = content
-        #         #     elif isinstance(content, list):
-        #         #         i = 0
-        #         #         for item in content:
-        #         #             keyteml = key_l + [str(i)]
-        #         #             i+=1
-        #         #             pro(item, keyteml)
-        #         #     elif isinstance(content, dict):
-        #         #         for key in content.keys():
-        #         #             keyteml = []
-        #         #             keyteml = key_l + [key]#这样可以得到一个新列表，否则只会在原列表上操作。
-        #         #             pro(content[key], keyteml)
-        #         #     return 0
-        #         with open(file_path, 'r', encoding = "UTF-8") as f:# 读取.txt文件内容
-        #             content = json.load(f)
-        #         # pro(content, key_l)
-        #         for key in content.keys():
-        #             if ": " in content[key]:
-        #                 temcont = content[key].split(": ")[1]
-        #                 content[key] = temcont
-        #             else:
-        #                 pass
-        #         for key in content.keys():
-        #             if "[" or "<" in content[key]:
-        #                 temcont = re.sub(r'\[.*?\]|<.*?>', '', content[key])#去除tag
-        #                 content[key] = temcont
-        #             else:
-        #                 pass
-        #         result_dict = content
-        #         os.remove(file_path)
-        #         with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
-        #             json.dump(result_dict, f, ensure_ascii=False, indent=4)
-        #         result_dict = {}
-        #         # os.remove(file_path)
-        #         print("成")
-        #     except Exception as e:
-        #         print("寄")
-        #         print(file_path)
-        #         break
+        elif file_path.endswith('.json'):#处理json文件
+            try:
+                key_l = []#需要添加文件等信息。
+                result_dict = {}
+                def pro(content, key_l):
+                    '''
+                    content: 得到的内容。
+                    key_l: 一个列表，用于生成最后文件当中每一个键值对的key。
+                    用来处理一个列表或者字典。
+                    '''
+                    global result_dict
+                    key = '_'.join(key_l)
+                    if isinstance(content, str):
+                        if ": " in content:
+                            result_dict[key.strip()] = content.strip()
+                    elif isinstance(content, list):
+                        i = 0
+                        for item in content:
+                            keyteml = key_l + [str(i)]
+                            i+=1
+                            pro(item, keyteml)
+                    elif isinstance(content, dict):
+                        for key in content.keys():
+                            keyteml = []
+                            keyteml = key_l + [key]#这样可以得到一个新列表，否则只会在原列表上操作。
+                            pro(content[key], keyteml)
+                    return 0
+                with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
+                    content = json.load(f)
+                for k in content["content"].keys():
+                    key = root.split("\\")[-1] + "_" + k
+                    key = key.strip()
+                    value = content["content"][k]
+                    value = value.strip()
+                    result_dict[key] = value
+                os.remove(file_path)
+                with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
+                    json.dump(result_dict, f, ensure_ascii=False, indent=4)
+                result_dict = {}
+                # os.remove(file_path)
+                print("成")
+            except Exception as e:
+                print("寄")
+                print(file_path)
+                # os.remove(file_path)
+                # break
