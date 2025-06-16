@@ -73,22 +73,22 @@ def do(source, target):
             file_path = os.path.join(root, file)#原文件的位置
             sourc = [i for i, char in enumerate(file_path) if char == '\\']
             parts = file_path.split('\\')
-            if "-" not in parts[-1]:
+            if "_" not in parts[-1]:
                 lan = "en"
             else:
-                lan = parts[-1].split('.')[1]
-            name = parts[-1].split('.')[0]
+                lan = parts[-1].split('_')[-1].split('.')[0]
+            name = parts[-1].replace(lan, "", 1).replace(".xml", "", 1)
             sectarget = os.path.join(target, name)#目标文件夹的位置
-            fintarget = os.path.join(target, name, lan + ".json")#目标文件的位置
+            fintarget = os.path.join(target, name, lan + ".xml")#目标文件的位置
             print(fintarget)
-            if not os.path.exists(sectarget):
-                os.makedirs(sectarget)
-            shutil.copy(file_path, fintarget)
+            # if not os.path.exists(sectarget):
+            #     os.makedirs(sectarget)
+            # shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\sandbox\data"
-target = r"D:\sandbox\data1"
+source = r"D:\MNBVC\StarWarsJediFallenOrder\Content\Localization"
+target = r"D:\sandbox\data"
 # to_the_out_folder(source)
-# different_folder(source, target)
+different_folder(source, target)
 # same_folder(source, target)
 # do(source, target)
