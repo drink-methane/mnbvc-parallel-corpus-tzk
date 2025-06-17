@@ -86,7 +86,7 @@ def do(source, target):
             # shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\MNBVC\StarWarsJediFallenOrder\Content\Localization"
+source = r"D:\MNBVC\StellarBlade"
 target = r"D:\sandbox\data"
 # to_the_out_folder(source)
 different_folder(source, target)
