@@ -9,7 +9,7 @@ import pysubs2
 import re
 import shutil
 
-directory = r"D:\MNBVC\StellarBlade"
+directory = r"D:\MNBVC\discoElysium"
 
 def process_string(s):
     # 查找第一个逗号的位置
@@ -233,16 +233,17 @@ for root, dirs, files in os.walk(directory):
                 with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
                     content = json.load(f)
                 for k in content.keys():
-                    if isinstance(content[k], list):
-                        for i in content[k]:
-                            for kk in i.keys():
-                                if isinstance(i[kk], list):
-                                    for ii in i[kk]:
-                                        key = ii["Key"].strip()
-                                        value = ii["Translation"]["Text"].strip()
-                                        pattern = r'<[^>]*>'
-                                        value = re.sub(pattern, '', value)
-                                        result_dict[key] = value
+                    if isinstance(content[k], dict):
+                        for i in content[k].keys():
+                            if isinstance(content[k][i], list):
+                                for kk in content[k][i]:
+                                    if isinstance(kk, dict):
+                                        if "Term" in kk and "Languages" in kk:
+                                            key = kk["Term"].strip()
+                                            valuel = kk["Languages"]
+                                            for kkk in valuel:
+                                                value=kkk.strip()
+                                            result_dict[key] = value
                     # key = root.split("\\")[-1] + "_" + k
                     # key = key.strip()
                     # value = content["content"][k]

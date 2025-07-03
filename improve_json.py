@@ -21,7 +21,7 @@ def improve(fileadd):
     with open(fileadd, "w", encoding="utf-8") as f:
         json.dump(parsed_data, f, indent=4, ensure_ascii=False)
 
-directory = r"D:\sandbox\data"
+directory = r"D:\MNBVC\discoElysium"
 
 for root, dirs, files in os.walk(directory):
     for file in files:
