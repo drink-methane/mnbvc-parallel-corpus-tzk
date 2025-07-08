@@ -9,7 +9,7 @@ import pysubs2
 import re
 import shutil
 
-directory = r"D:\MNBVC\discoElysium"
+directory = r"D:\MNBVC\SCP_Secret_Laboratory"
 
 def process_string(s):
     # 查找第一个逗号的位置
@@ -55,22 +55,17 @@ for root, dirs, files in os.walk(directory):
                 break
         elif file_path.endswith('.txt'):#处理txt文件
             try:
-                with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
+                with open(file_path, 'r', encoding = "UTF-8") as f:# 读取.txt文件内容
                     content = f.read()#content是str！
                 lines = content.splitlines()#lines是包含每一行的一个列表
+                ln = 0
                 for line in lines:
-                    # 正则表达式匹配模式，处理前导和尾随空格，并提取三部分
-                    pattern = r'^\s*(\S+)\s+(\d)\s+(.*)\s*$'
-                    match = re.match(pattern, line)
-                    if match:
-                        key = match.group(1)
-                        value = match.group(3)
-                        print(key,"  ",value)
-                        result_dict[key.strip()] = value.strip()# 将键值对添加到字典中
-                        key = ""
-                        value = ""
-                    else:
-                        pass#result_dict是一个对好的字典
+                    key = str(ln)
+                    ln = ln + 1
+                    value = line.strip()
+                    result_dict[key] = value
+                    key = ""
+                    value = ""
                 with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
                     json.dump(result_dict, f, ensure_ascii=False, indent=4)
                 os.remove(file_path)
@@ -203,7 +198,8 @@ for root, dirs, files in os.walk(directory):
         elif file_path.endswith('.archive'):#处理archive文件
             newpath = file_path.replace(".archive", ".json")
             shutil.move(file_path, newpath)
-        elif file_path.endswith('.json'):#处理json文件
+            pass
+        # elif file_path.endswith('.json'):#处理json文件
             try:
                 # key_l = []#需要添加文件等信息。
                 # result_dict = {}
@@ -249,9 +245,9 @@ for root, dirs, files in os.walk(directory):
                     # value = content["content"][k]
                     # value = value.strip()
                     # result_dict[key] = value
-                os.remove(file_path)
-                with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
-                    json.dump(result_dict, f, ensure_ascii=False, indent=4)
+                # os.remove(file_path)
+                # with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
+                #     json.dump(result_dict, f, ensure_ascii=False, indent=4)
                 result_dict = {}
                 # os.remove(file_path)
                 print("成")
