@@ -6,10 +6,10 @@ import pysubs2
 # import sys
 # import struct
 # from charset_mnbvc import api
-import re
+# import re
 import shutil
 
-directory = r"D:\MNBVC\SCP_Secret_Laboratory"
+directory = r"D:\MNBVC\AzurLane\AzurLaneData"
 
 def process_string(s):
     # 查找第一个逗号的位置
@@ -199,55 +199,43 @@ for root, dirs, files in os.walk(directory):
             newpath = file_path.replace(".archive", ".json")
             shutil.move(file_path, newpath)
             pass
-        # elif file_path.endswith('.json'):#处理json文件
+        elif file_path.endswith('.json'):#处理json文件
             try:
-                # key_l = []#需要添加文件等信息。
-                # result_dict = {}
-                # def pro(content, key_l):
-                #     '''
-                #     content: 得到的内容。
-                #     key_l: 一个列表，用于生成最后文件当中每一个键值对的key。
-                #     用来处理一个列表或者字典。
-                #     '''
-                #     global result_dict
-                #     key = '_'.join(key_l)
-                #     if isinstance(content, str):
-                #         if ": " in content:
-                #             result_dict[key.strip()] = content.strip()
-                #     elif isinstance(content, list):
-                #         i = 0
-                #         for item in content:
-                #             keyteml = key_l + [str(i)]
-                #             i+=1
-                #             pro(item, keyteml)
-                #     elif isinstance(content, dict):
-                #         for key in content.keys():
-                #             keyteml = []
-                #             keyteml = key_l + [key]#这样可以得到一个新列表，否则只会在原列表上操作。
-                #             pro(content[key], keyteml)
-                #     return 0
+                key_l = []#需要添加文件等信息。
+                result_dict = {}
+                def pro(content, key_l):
+                    '''
+                    content: 得到的内容。
+                    key_l: 一个列表，用于生成最后文件当中每一个键值对的key。
+                    用来处理一个列表或者字典。
+                    '''
+                    global result_dict
+                    key = '_'.join(key_l)
+                    if isinstance(content, str):
+                        result_dict[key.strip()] = content.strip()
+                    elif isinstance(content, list):
+                        i = 0
+                        for item in content:
+                            keyteml = key_l + [str(i)]
+                            i+=1
+                            pro(item, keyteml)
+                    elif isinstance(content, dict):
+                        for key in content.keys():
+                            keyteml = []
+                            keyteml = key_l + [key]#这样可以得到一个新列表，否则只会在原列表上操作。
+                            pro(content[key], keyteml)
+                    return 0
                 with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
                     content = json.load(f)
-                for k in content.keys():
-                    if isinstance(content[k], dict):
-                        for i in content[k].keys():
-                            if isinstance(content[k][i], list):
-                                for kk in content[k][i]:
-                                    if isinstance(kk, dict):
-                                        if "Term" in kk and "Languages" in kk:
-                                            key = kk["Term"].strip()
-                                            valuel = kk["Languages"]
-                                            for kkk in valuel:
-                                                value=kkk.strip()
-                                            result_dict[key] = value
+                pro(content = content, key_l = key_l)
                     # key = root.split("\\")[-1] + "_" + k
                     # key = key.strip()
                     # value = content["content"][k]
                     # value = value.strip()
                     # result_dict[key] = value
-                # os.remove(file_path)
-                # with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
-                #     json.dump(result_dict, f, ensure_ascii=False, indent=4)
+                os.remove(file_path)
+                with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
+                    json.dump(result_dict, f, ensure_ascii=False, indent=4)
                 result_dict = {}
                 # os.remove(file_path)
                 print("成")

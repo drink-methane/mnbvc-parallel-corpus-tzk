@@ -21,12 +21,13 @@ def improve(fileadd):
     with open(fileadd, "w", encoding="utf-8") as f:
         json.dump(parsed_data, f, indent=4, ensure_ascii=False)
 
-directory = r"D:\MNBVC\discoElysium"
+directory = r"D:\tem\AzurLaneData"
 
 for root, dirs, files in os.walk(directory):
     for file in files:
         file_path = os.path.join(root, file)
-        try:
-            improve(file_path)
-        except:
-            os.remove(file_path)
+        if file_path.endswith('.json'):
+            try:
+                improve(file_path)
+            except:
+                os.remove(file_path)

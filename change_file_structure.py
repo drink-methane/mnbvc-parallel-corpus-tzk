@@ -1,6 +1,7 @@
 import os
 import shutil
 import tools as tos
+import subprocess
 
 '''
 如果有一个文件夹，里面有非常复杂的文件结构，但是最末级，有着一个相对简单的结构，
@@ -62,6 +63,7 @@ def to_the_out_folder(source):
                 if not os.path.exists(sectarget):
                     os.makedirs(sectarget)
                 shutil.copy(file_path, fintarget)
+                os.remove(file_path)
     return 0
 
 '''
@@ -86,9 +88,19 @@ def do(source, target):
             # shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\MNBVC\SCP_Secret_Laboratory"
-target = r"D:\sandbox\data"
+# source = r"D:\MNBVC\AzurLane\AzurLaneData"
+# target = r"D:\sandbox\data"
 # to_the_out_folder(source)
-different_folder(source, target)
+# different_folder(source, target)
 # same_folder(source, target)
 # do(source, target)
+
+if not os.path.exists(r"D:\sandbox\data"):
+    os.makedirs(r"D:\sandbox\data")
+directory = r"D:\MNBVC\AzurLane\AzurLaneData"
+
+to_the_out_folder(directory)#移动文件，整理格式。
+shutil.rmtree(os.path.join(directory, "AzurLaneData"))
+different_folder(directory, r"D:\sandbox\data")
+
+subprocess.run(["python", "all.py"])
