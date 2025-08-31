@@ -6,13 +6,13 @@ import tools as tos
 import subprocess
 
 LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中，如果有组合数据，应该考虑用dict
-    'CN':('简体中文','zh_text'), # 如果需要语言重命名，或者打印语言信息，可以像这样把每个语言的设置拆成 tuple 来写。这个表的意义是建立语言的映射关系
-    'EN':('英文','en_text'),
+    'cn':('简体中文','zh_text'), # 如果需要语言重命名，或者打印语言信息，可以像这样把每个语言的设置拆成 tuple 来写。这个表的意义是建立语言的映射关系
+    'en':('英文','en_text'),
     # 'fr':('法语','fr_text'),
     # 'de':('德语','de_text'),
     # 'it':('意大利语','it_text'),
-    'JP':('日语','ja_text'),
-    'KR':('韩语','ko_text'),
+    'jp':('日语','ja_text'),
+    'kr':('韩语','ko_text'),
     # 'pl':('波兰语','pl'), # 填扩展字段里
     # 'Portuguese (Brazil)':('葡萄牙语','pt_text'),
     # 'ru':('俄语','ru_text'),
@@ -23,7 +23,7 @@ LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中�
     # 'fi':('芬兰语','fi'), # 填扩展字段里
     # 'epo':('世界语','eo_text'),
     # 'nl':('荷兰语','nl_text'),
-    'TW':('繁体中文','cht_text'),
+    'tw':('繁体中文','cht_text'),
     # 'vi':('越南语','vi_text'),
     # 'ukr':('乌克兰语','uk'), # 填扩展字段里
     # 'tr':('土耳其语','tr'), # 填扩展字段里
@@ -45,7 +45,7 @@ LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中�
     # 'ro':('罗马尼亚语','ro'),# 填扩展字段里
 }
 mate_dir = Path(r"D:\sandbox\data")
-filename = "AzurLane.jsonl"
+filename = "BanGDream.jsonl"
 max_lines = 500000
 max_size = 512
 
@@ -59,6 +59,15 @@ mate_dir_jl = mate_dir_j / Path(filename)
 tos.not_exist(mate_dir_j)
 tos.not_exist(log_dir)
 tos.not_exist(mate_dir / Path("check_log.txt"))
+
+types = tos.check_file_type(mate_dir)
+for ftype in types:
+    if ftype != "json":
+        tos.del_specific_filetype(folder = mate_dir, tartype = ftype)
+for item in os.listdir(mate_dir):
+    if item not in LANGUAGES:
+        item_path = os.path.join(mate_dir, item)
+        shutil.rmtree(item_path)
 
 tos.put_in(LANGUAGES, filename, mate_dir)
 command = ["python", "jsonlchk.py", "-d", str(mate_dir)]

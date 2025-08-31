@@ -7,7 +7,7 @@ import re
 import multiprocessing
 from tqdm import tqdm
 # import shutil
-import tools as tos
+# import tools as tos
 # import subprocess
 
 def remove_html_tags(text):
@@ -17,6 +17,7 @@ def remove_html_tags(text):
 def process_single_file(file_path):
     """处理单个JSON文件的函数，用于线程池"""
     try:
+        json_file_path = os.path.splitext(file_path)[0] + '.json'
         # 检测文件编码
         with open(file_path, 'rb') as file:
             raw_data = file.read()
@@ -27,25 +28,42 @@ def process_single_file(file_path):
         with open(file_path, 'r', encoding=encodin) as f:
             content = json.load(f)
         
-        # 使用迭代代替递归防止栈溢出
-        def flatten_json(data):
-            result = {}
-            stack = [(data, [])]
+        # # 使用迭代代替递归防止栈溢出
+        # def flatten_json(data):
+        #     result = {}
+        #     stack = [(data, [])]
             
-            while stack:
-                current, path = stack.pop()
-                if isinstance(current, str):
-                    key = '_'.join(path)
-                    result[key.strip()] = remove_html_tags(current.strip())
-                elif isinstance(current, list):
-                    for i, item in enumerate(reversed(current)):
-                        stack.append((item, path + [str(len(current)-1-i)]))
-                elif isinstance(current, dict):
-                    for k, v in current.items():
-                        stack.append((v, path + [str(k)]))
-                else:  # 处理其他数据类型（如数字、布尔值）
+        #     while stack:
+        #         current, path = stack.pop()
+        #         if isinstance(current, str):
+        #             key = '_'.join(path)
+        #             result[key.strip()] = remove_html_tags(current.strip())
+        #         elif isinstance(current, list):
+        #             for i, item in enumerate(reversed(current)):
+        #                 stack.append((item, path + [str(len(current)-1-i)]))
+        #         elif isinstance(current, dict):
+        #             for k, v in current.items():
+        #                 stack.append((v, path + [str(k)]))
+        #         else:  # 处理其他数据类型（如数字、布尔值）
+        #             pass
+        #     return result
+        def flatten_json(content):
+            result_dict = {}
+            if "Base" in content:
+                if "talkData" in content["Base"]:
                     pass
-            return result
+                else:
+                    return {}
+            else:
+                return {}
+            c = content["Base"]["talkData"]
+            cn = 0
+            for it in c:
+                if "body" not in it:
+                    continue
+                result_dict[str(cn)] = it["body"]
+                cn = cn + 1
+            return result_dict
         
         flattened_data = flatten_json(content)
         
@@ -61,7 +79,10 @@ def process_single_file(file_path):
             temp_name = tmp_file.name
         
         # 替换原文件
-        os.replace(temp_name, file_path)
+        os.replace(temp_name, json_file_path)
+        if 'temp_name' in locals() and os.path.exists(temp_name):
+            os.remove(temp_name)
+        # os.remove(file_path)
         return True
     
     except Exception as e:
@@ -69,6 +90,7 @@ def process_single_file(file_path):
         # 清理临时文件（如果存在）
         if 'temp_name' in locals() and os.path.exists(temp_name):
             os.remove(temp_name)
+        # os.remove(file_path)
         return False
 
 def process_file_batch(file_batch):
@@ -90,17 +112,17 @@ def process_file_batch(file_batch):
     return success_count, len(file_batch)
 
 def main():
-    directory = r"D:\MNBVC\AzurLane\AzurLaneData"
+    directory = r"D:\MNBVC\bestdori"
     json_files = []
 
-    print("正在扫描JSON文件...")
+    print("正在扫描文件...")
     # 收集所有JSON文件路径
     for root, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith('.json'):
                 json_files.append(os.path.join(root, file))
 
-    print(f"找到 {len(json_files)} 个JSON文件，开始处理...")
+    print(f"找到 {len(json_files)} 个可处理文件，开始处理...")
 
     # 设置批处理大小（每批处理xx个文件）
     batch_size = 24

@@ -26,10 +26,12 @@ def put_in(LANGUAGES, filename, work_dir):
     def numorem(input_string):
         # 定义正则表达式
         pattern = r'^[0-9]*$'
-        
-        # 使用 re.match 检查字符串是否匹配正则表达式
-        if re.match(pattern, input_string):
-            return True#是数字或者空字符串
+        if type(input_string) != "str":
+            # 使用 re.match 检查字符串是否匹配正则表达式
+            if re.match(pattern, input_string):
+                return True#是数字或者空字符串
+            else:
+                return False
         else:
             return False
         
@@ -68,8 +70,13 @@ def put_in(LANGUAGES, filename, work_dir):
         # 过渡封装会使整个脚本函数太多，在函数之间跳转很容易打断思路，使得阅读困难
         lang_dir = work_dir / lang
         for json_file in lang_dir.iterdir():
-            with open(json_file, 'r', encoding='utf-8') as f:
-                json_content = json.load(f)
+            try:
+                with open(json_file, 'r', encoding='utf-8') as f:
+                    json_content = json.load(f)
+            except json.JSONDecodeError as e:
+                print({str(e)}, json_file)
+            # with open(json_file, 'r', encoding='utf-8') as f:
+            #     json_content = json.load(f)
             out_paths = {}
             traverse_dict(json_content, (json_file.name ,), out_paths)
             for out_path, data_value in out_paths.items(): # 到这步，data_value就是文本内容
@@ -128,3 +135,22 @@ def ha(input_string):#取哈希值
     sha256_hash.update(input_string.encode('utf-8'))
     hash_value = sha256_hash.hexdigest()
     return hash_value
+
+def check_file_type(folder):
+    types = []
+    for root, dirs, files in os.walk(folder):
+        for file in files:
+            file_path = os.path.join(root, file)
+            ftype = file_path.split(".")[-1]
+            if ftype not in types:
+                types.append(ftype)
+    return types
+
+def del_specific_filetype(folder, tartype):
+    for root, dirs, files in os.walk(folder):
+        for file in files:
+            file_path = os.path.join(root, file)
+            ftype = file_path.split(".")[-1]
+            if ftype == tartype:
+                os.remove(file_path)
+    return 0
