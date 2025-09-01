@@ -9,20 +9,21 @@ import pysubs2
 # import re
 import shutil
 
-directory = r"D:\MNBVC\bestdori"
+directory = r"D:\MNBVC\PlagueInc"
 
-def process_string(s):
-    # 查找第一个逗号的位置
-    first_comma_index = s.find(',')
-    # 如果没有逗号，则返回空字符串
-    if first_comma_index == -1:
-        return ""
-    # 提取第一个逗号之后的所有内容
-    result = s[first_comma_index + 1:]
-    # 如果结果非空且最后一个字符是逗号，则移除末尾的逗号
-    if result and result[-1] == ',':
-        result = result[:-1]
-    return result
+def extract_outer_quotes(text):
+    # 查找第一个双引号的位置
+    first_quote = text.find('"')
+    if first_quote == -1:
+        return None  # 如果没有双引号，返回None
+    
+    # 查找最后一个双引号的位置
+    last_quote = text.rfind('"')
+    if last_quote == first_quote:
+        return None  # 如果只有一个双引号，返回None
+    
+    # 提取两个最外层双引号之间的内容
+    return text[first_quote + 1:last_quote]
 
 for root, dirs, files in os.walk(directory):
     for file in files:
@@ -55,21 +56,24 @@ for root, dirs, files in os.walk(directory):
                 break
         elif file_path.endswith('.txt'):#处理txt文件
             try:
-                # with open(file_path, 'r', encoding = "UTF-8") as f:# 读取.txt文件内容
-                #     content = f.read()#content是str！
-                # lines = content.splitlines()#lines是包含每一行的一个列表
-                # ln = 0
-                # for line in lines:
-                #     key = str(ln)
-                #     ln = ln + 1
-                #     value = line.strip()
-                #     result_dict[key] = value
-                #     key = ""
-                #     value = ""
-                # with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
-                #     json.dump(result_dict, f, ensure_ascii=False, indent=4)
-                os.remove(file_path)
-                # print("txt成")
+                with open(file_path, 'r', encoding = "UTF-8") as f:# 读取.txt文件内容
+                    content = f.read()#content是str！
+                lines = content.splitlines()#lines是包含每一行的一个列表
+                for line in lines:
+                    if "=" in line and ";" in line:
+                        try:
+                            linel = line.split("=")
+                            key = extract_outer_quotes(linel[0]).strip()
+                            value = extract_outer_quotes(linel[1]).strip()
+                            result_dict[key] = value
+                            key = ""
+                            value = ""
+                        except:
+                            pass
+                with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
+                    json.dump(result_dict, f, ensure_ascii=False, indent=4)
+                # os.remove(file_path)
+                print("txt成")
             except Exception as e:
                 print("寄")
                 print(file_path)
@@ -82,7 +86,7 @@ for root, dirs, files in os.walk(directory):
                 for line in lines:
                     if "," in line:
                         key = line.split(',')[0]# 使用split方法以等号为分隔符分割字符串
-                        value = process_string(line)
+                        # value = process_string(line)
                         result_dict[key.strip()] = value.strip()# 将键值对添加到字典中
                 with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
                     json.dump(result_dict, f, ensure_ascii=False, indent=4)
