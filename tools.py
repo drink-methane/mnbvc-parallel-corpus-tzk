@@ -26,12 +26,10 @@ def put_in(LANGUAGES, filename, work_dir):
     def numorem(input_string):
         # 定义正则表达式
         pattern = r'^[0-9]*$'
-        if type(input_string) != "str":
-            # 使用 re.match 检查字符串是否匹配正则表达式
-            if re.match(pattern, input_string):
-                return True#是数字或者空字符串
-            else:
-                return False
+        if not isinstance(input_string, str):
+            return True
+        if re.match(pattern, input_string):
+            return True
         else:
             return False
         

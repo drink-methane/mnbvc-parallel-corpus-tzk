@@ -9,7 +9,7 @@ import pysubs2
 # import re
 import shutil
 
-directory = r"D:\MNBVC\PlagueInc"
+directory = r"D:\MNBVC\CitiesSkylinesLocale.po"
 
 def extract_outer_quotes(text):
     # 查找第一个双引号的位置
@@ -200,7 +200,21 @@ for root, dirs, files in os.walk(directory):
         elif file_path.endswith('.locres'):#处理locres文件
             os.remove(file_path)
         elif file_path.endswith('.po'):#处理po文件
-            os.remove(file_path)
+            with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
+                content = f.read()
+            lines = content.splitlines()#lines是包含每一行的一个列表
+            ln = 1
+            for line in lines:
+                if line.startswith("#."):
+                    key = line
+                elif line.startswith("msgid"):
+                    value = extract_outer_quotes(line)
+                    result_dict[key] = value
+                    key = ""
+                    value = ""
+            with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
+                json.dump(result_dict, f, ensure_ascii=False, indent=4)
+            # print(type(content))
         elif file_path.endswith('.bundle'):#处理bundle文件
             os.remove(file_path)
         elif file_path.endswith('.tmp'):#处理tmp文件
