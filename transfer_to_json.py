@@ -9,7 +9,7 @@ import pysubs2
 # import re
 import shutil
 
-directory = r"D:\MNBVC\CitiesSkylinesLocale.po"
+directory = r"D:\MNBVC\DeepRockGalactic\DeepRockGalactic\Content\Localization\PatchNotes"
 
 def extract_outer_quotes(text):
     # 查找第一个双引号的位置
@@ -21,7 +21,7 @@ def extract_outer_quotes(text):
     last_quote = text.rfind('"')
     if last_quote == first_quote:
         return None  # 如果只有一个双引号，返回None
-    
+
     # 提取两个最外层双引号之间的内容
     return text[first_quote + 1:last_quote]
 
@@ -84,13 +84,14 @@ for root, dirs, files in os.walk(directory):
                     content = f.read()#content是str！
                 lines = content.splitlines()#lines是包含每一行的一个列表
                 for line in lines:
-                    if "," in line:
-                        key = line.split(',')[0]# 使用split方法以等号为分隔符分割字符串
-                        # value = process_string(line)
-                        result_dict[key.strip()] = value.strip()# 将键值对添加到字典中
+                    if line.count(",") >= 2:
+                        linel = line.split(",")
+                        key = linel[0]
+                        value = linel[1].strip()
+                        result_dict[key] = value# 将键值对添加到字典中
                 with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
                     json.dump(result_dict, f, ensure_ascii=False, indent=4)
-                os.remove(file_path)
+                # os.remove(file_path)
                 print("csv成")
             except Exception as e:
                 print("寄")
