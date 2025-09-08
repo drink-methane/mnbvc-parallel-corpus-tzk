@@ -12,13 +12,13 @@ def aliandmove(source, target):
             if file_path.endswith('.json'):
                 with open(file_path, 'r', encoding = "UTF-8") as f:# 读取文件内容
                     content = json.load(f)
-                text = content["textList"]
+                text = content["m_texts"]
                 end, jad, zhsd, zhtd = {}, {}, {}, {}
                 for i in text:
-                    end[i["stringID"]] = i["stringEN"]
-                    jad[i["stringID"]] = i["stringJP"]
-                    zhsd[i["stringID"]] = i["stringSC"]
-                    zhtd[i["stringID"]] = i["stringTC"]
+                    end[i["m_stringID"]] = i["m_stringEN"]
+                    jad[i["m_stringID"]] = i["m_stringJP"]
+                    zhsd[i["m_stringID"]] = i["m_stringSC"]
+                    zhtd[i["m_stringID"]] = i["m_stringTC"]
                 # enf, jaf, zhsf, zhtf = r""# 各自的目标路径
                 enf = os.path.join(target, "en", tos.ha(file_path) + ".json")
                 jaf = os.path.join(target, "ja", tos.ha(file_path) + ".json")
@@ -42,6 +42,6 @@ def aliandmove(source, target):
                     json.dump(zhtd, f, ensure_ascii=False, indent=4)
     return 0
 
-source = r"D:\MNBVC\SpiceAndWolfVR2"
+source = r"D:\MNBVC\SpiceAndWolfVR1"
 target = r"D:\sandbox\data"
 aliandmove(source, target)

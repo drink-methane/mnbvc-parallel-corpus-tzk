@@ -48,7 +48,7 @@ LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中�
     # 'sl':('斯洛文尼亚语','sl'),# 填扩展字段里
 }
 mate_dir = Path(r"D:\sandbox\data")
-filename = "SpiceAndWolfVR2.jsonl"
+filename = "SpiceAndWolfVR1.jsonl"
 max_lines = 500000
 max_size = 512
 
