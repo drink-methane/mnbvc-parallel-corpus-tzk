@@ -18,7 +18,7 @@ def different_folder(source, target):
                 sourc = [i for i, char in enumerate(file_path) if char == '\\']
                 parts = root.split('\\')
                 sectarget = os.path.join(target, parts[-1])#目标文件夹的位置
-                fintarget = os.path.join(target, parts[-1], tos.ha(file_path[:sourc[-2]] + file) + ".json")#目标文件的位置
+                fintarget = os.path.join(target, parts[-1], tos.ha(file_path[:sourc[-2]] + file + "111") + ".json")#目标文件的位置
                 if not os.path.exists(sectarget):
                     os.makedirs(sectarget)
                 shutil.copy(file_path, fintarget)
@@ -86,7 +86,7 @@ def do(source, target):
             shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\MNBVC\DeepRockGalactic\DeepRockGalactic\Content\Localization\PatchNotes"
+source = r"D:\MNBVC\Mirror1\TextAsset"
 target = r"D:\sandbox\data"
 # to_the_out_folder(source)
 different_folder(source, target)
