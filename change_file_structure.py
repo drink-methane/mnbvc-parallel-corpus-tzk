@@ -86,7 +86,7 @@ def do(source, target):
             shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\MNBVC\Mirror1\TextAsset"
+source = r"D:\MNBVC\HollowKnight\HollowKnight"
 target = r"D:\sandbox\data"
 # to_the_out_folder(source)
 different_folder(source, target)
