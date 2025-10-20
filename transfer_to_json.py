@@ -9,7 +9,7 @@ import pysubs2
 # import re
 import shutil
 
-directory = r"D:\MNBVC\DeepRockGalactic\DeepRockGalactic\Content\Localization\PatchNotes"
+directory = r"D:\MNBVC\HeartsOfIron4"
 
 def extract_outer_quotes(text):
     # 查找第一个双引号的位置
@@ -24,6 +24,26 @@ def extract_outer_quotes(text):
 
     # 提取两个最外层双引号之间的内容
     return text[first_quote + 1:last_quote]
+
+def extract_before_first_quote(text):
+    """
+    提取字符串中第一个双引号之前的内容
+    
+    参数:
+        text (str): 输入字符串
+        
+    返回:
+        str: 第一个双引号之前的内容，如果没有双引号则返回原字符串
+    """
+    # 查找第一个双引号的位置
+    quote_index = text.find('"')
+    
+    # 如果找到双引号，返回之前的内容
+    if quote_index != -1:
+        return text[:quote_index]
+    else:
+        # 如果没有双引号，返回整个字符串
+        return text
 
 for root, dirs, files in os.walk(directory):
     for file in files:
@@ -186,6 +206,25 @@ for root, dirs, files in os.walk(directory):
                 print("寄")
                 print(file_path)
                 break
+        elif file_path.endswith('.yml'):#处理yml文件
+            try:
+                with open(file_path, 'r', encoding = "UTF-8") as f:# 读取.oxt文件内容
+                    content = f.read()#content是str！
+                lines = content.splitlines()#lines是包含每一行的一个列表
+                lines = lines[0:]
+                for line in lines:
+                    if line.count("\"") > 1:
+                        value = extract_outer_quotes(line).strip()
+                        key = extract_before_first_quote(line).strip()
+                        result_dict[key] = value
+                with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
+                    json.dump(result_dict, f, ensure_ascii=False, indent=4)
+                os.remove(file_path)#删除源文件
+                print("yml成")
+            except Exception as e:
+                print("寄")
+                print(file_path)
+                break
         # elif file_path.endswith('.rar'):#处理rar文件
         #     os.remove(file_path)
         # elif file_path.endswith('.zip'):#处理zip文件
@@ -227,6 +266,8 @@ for root, dirs, files in os.walk(directory):
         # elif file_path.endswith('.asset'):#处理asset文件
         #     os.remove(file_path)
         elif file_path.endswith('.json'):#处理json文件
+            # os.remove(file_path)
+            continue
             try:
                 key_l = []#需要添加文件等信息。
                 result_dict = {}

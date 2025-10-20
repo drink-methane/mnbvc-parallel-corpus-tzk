@@ -68,7 +68,8 @@ def to_the_out_folder(source):
     return 0
 
 '''
-根据文件名分类、重命名。
+存在一个文件夹，里面有嵌套的多个文件，根据特定级数的文件夹名字确定所属语言，
+根据后续的文件结构命名文件，移动到新的地址，简化文件结构。
 '''
 def do(source, target):
     for root, dirs, files in os.walk(source):
@@ -82,13 +83,39 @@ def do(source, target):
             if not os.path.exists(sectarget):
                 os.makedirs(sectarget)
             print(fintarget)
-
             shutil.copy(file_path, fintarget)
     return 0
 
-source = r"D:\MNBVC\AstralParty\TextAsset"
+'''
+存在一个文件夹，里面有大量文件，没有嵌套结构，根据文件名的特征分类所属语言，
+重命名并且移动到新的地址。
+newfilename的数字可以根据具体语言来调整。
+'''
+def seperate(source, target):
+    for root, dirs, files in os.walk(source):
+        for file in files:
+            file_path = os.path.join(root, file)#原文件的位置
+            fpl = file_path.split("\\")
+            filename = fpl[-1]
+            if "." in filename:
+                name = filename.split(".")[0]
+                lan = name.split("_")[-1]
+                newfilename = "_".join(name.split("_")[:-2]) + ".json"
+            else:
+                lan = filename.split("_")[-1]
+                newfilename = "_".join(name.split("_")[:-2]) + ".json"
+            fintarget = os.path.join(target, lan, newfilename)
+            sectarget = os.path.join(target, lan)
+            if not os.path.exists(sectarget):
+                os.makedirs(sectarget)
+            print(fintarget)
+            shutil.copy(file_path, fintarget)
+    return 0
+
+source = r"D:\MNBVC\HeartsOfIron4\simp_chinese"
 target = r"D:\sandbox\data"
 # to_the_out_folder(source)
-different_folder(source, target)
+# different_folder(source, target)
 # same_folder(source, target)
 # do(source, target)
+seperate(source, target)
