@@ -102,7 +102,7 @@ def not_exist(dir):
     else:
         pass
 
-def cut(input_file, output_dir, filenam, lines_per_file):
+def cut(input_file, output_dir, filenam, lines_per_file):#把文件每隔xx行切分一下
     filename = filenam.split('.')[0]
     with open(input_file, "r", encoding="utf-8") as infile:
         file_count = 0  # 文件计数器
@@ -121,7 +121,7 @@ def cut(input_file, output_dir, filenam, lines_per_file):
             outfile.close()
     return None
 
-def size_check(file_path, standard_size):
+def size_check(file_path, standard_size):#判断文件大小是否合规
     size = os.path.getsize(file_path)
     if size > standard_size*1024*1024:
         return True
@@ -134,7 +134,7 @@ def ha(input_string):#取哈希值
     hash_value = sha256_hash.hexdigest()
     return hash_value
 
-def check_file_type(folder):
+def check_file_type(folder):#给出所有文件类型
     types = []
     for root, dirs, files in os.walk(folder):
         for file in files:
@@ -144,7 +144,7 @@ def check_file_type(folder):
                 types.append(ftype)
     return types
 
-def del_specific_filetype(folder, tartype):
+def del_specific_filetype(folder, tartype):#删除某一类型文件
     for root, dirs, files in os.walk(folder):
         for file in files:
             file_path = os.path.join(root, file)
@@ -152,3 +152,35 @@ def del_specific_filetype(folder, tartype):
             if ftype == tartype:
                 os.remove(file_path)
     return 0
+
+def readfile(path, type, encl=None):#读取一个文件内容
+    '''
+    encl:encoding list
+    '''
+    if encl == None:
+        encl = [
+            'utf-8',
+            'gbk',
+            'gb2312',
+            'gb18030',
+            'big5',
+            'latin-1',
+            'iso-8859-1',
+            'cp1252',
+            'utf-16',
+            'utf-32',
+            'Windows-1250',
+            'utf-8-sig'
+        ]
+    for encodin in encl:
+        try:
+            if type == ".json":
+                with open(path, 'r', encoding=encodin) as f:
+                    content = json.load(f)
+            elif type == ".txt":
+                with open(path, 'r', encoding = encodin) as f:# 读取.txt文件内容
+                    content = f.read()#content是str！
+            return content
+        except:
+            pass
+    print("read fail", path)

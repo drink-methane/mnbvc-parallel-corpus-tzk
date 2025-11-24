@@ -1,0 +1,11 @@
+chardet==5.2.0
+colorama==0.4.6
+json5==0.12.1
+pysubs2==1.8.0
+setuptools==80.9.0
+tqdm==4.67.1
+wheel==0.45.1
+opencc==1.1.9
+pydantic>=2.0
+pyarrow==22.0.0
+charset_mnbvc==0.0.17

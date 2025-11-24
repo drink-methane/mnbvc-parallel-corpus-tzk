@@ -1,4 +1,4 @@
-# import chardet
+import chardet
 import os
 import json
 import concurrent.futures
@@ -7,7 +7,7 @@ import re
 import multiprocessing
 from tqdm import tqdm
 # import shutil
-# import tools as tos
+import tools as tos
 # import subprocess
 
 def remove_html_tags(text):
@@ -16,57 +16,25 @@ def remove_html_tags(text):
 
 def process_single_file(file_path):
     """处理单个JSON文件的函数，用于线程池"""
+    file_type = ".txt"
     try:
-        json_file_path = os.path.splitext(file_path)[0] + '.json'
+        json_file_path = os.path.splitext(file_path)[0] + ".json"
+        # os.remove(json_file_path)
+        # return True
         # 检测文件编码
-        with open(file_path, 'rb') as file:
-            raw_data = file.read()
-            # encodindic = chardet.detect(raw_data)
-            encodin = 'utf-8'
+        content = tos.readfile(file_path, file_type)
         
-        # 读取JSON内容
-        with open(file_path, 'r', encoding=encodin) as f:
-            content = json.load(f)
-        
-        # # 使用迭代代替递归防止栈溢出
-        # def flatten_json(data):
-        #     result = {}
-        #     stack = [(data, [])]
-            
-        #     while stack:
-        #         current, path = stack.pop()
-        #         if isinstance(current, str):
-        #             key = '_'.join(path)
-        #             result[key.strip()] = remove_html_tags(current.strip())
-        #         elif isinstance(current, list):
-        #             for i, item in enumerate(reversed(current)):
-        #                 stack.append((item, path + [str(len(current)-1-i)]))
-        #         elif isinstance(current, dict):
-        #             for k, v in current.items():
-        #                 stack.append((v, path + [str(k)]))
-        #         else:  # 处理其他数据类型（如数字、布尔值）
-        #             pass
-        #     return result
-        def flatten_json(content):
-            result_dict = {}
-            if "Base" in content:
-                if "talkData" in content["Base"]:
-                    pass
-                else:
-                    return {}
-            else:
-                return {}
-            c = content["Base"]["talkData"]
-            cn = 0
-            for it in c:
-                if "body" not in it:
-                    continue
-                result_dict[str(cn)] = it["body"]
-                cn = cn + 1
-            return result_dict
-        
-        flattened_data = flatten_json(content)
-        
+        flattened_data = {}
+        lines = content.splitlines()#lines是包含每一行的一个列表
+        n=0
+        for line in lines:
+            value=line.strip()
+            key=str(n)
+            flattened_data[key]=value
+            key=""
+            value=""
+            n=n+1
+
         # 使用临时文件确保操作原子性
         with tempfile.NamedTemporaryFile(
             mode='w', 
@@ -112,17 +80,19 @@ def process_file_batch(file_batch):
     return success_count, len(file_batch)
 
 def main():
-    directory = r"D:\MNBVC\bestdori"
+    directory = r"C:\files\MNBVC\米塔MiSide"
+    global file_type
+    file_type = ".txt"
     json_files = []
 
     print("正在扫描文件...")
     # 收集所有JSON文件路径
     for root, dirs, files in os.walk(directory):
         for file in files:
-            if file.endswith('.json'):
+            if file.endswith(file_type):
                 json_files.append(os.path.join(root, file))
 
-    print(f"找到 {len(json_files)} 个可处理文件，开始处理...")
+    print(f"找到 {len(json_files)} 个" + file_type + "文件，开始处理...")
 
     # 设置批处理大小（每批处理xx个文件）
     batch_size = 24

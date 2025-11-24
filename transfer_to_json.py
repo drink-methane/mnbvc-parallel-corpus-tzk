@@ -9,7 +9,7 @@ import pysubs2
 # import re
 import shutil
 
-directory = r"D:\MNBVC\HeartsOfIron4"
+directory = r"C:\files\MNBVC\米塔MiSide"
 
 def extract_outer_quotes(text):
     # 查找第一个双引号的位置
@@ -79,19 +79,17 @@ for root, dirs, files in os.walk(directory):
                 with open(file_path, 'r', encoding = "UTF-8") as f:# 读取.txt文件内容
                     content = f.read()#content是str！
                 lines = content.splitlines()#lines是包含每一行的一个列表
+                n=0
                 for line in lines:
-                    if "=" in line and ";" in line:
-                        try:
-                            linel = line.split("=")
-                            key = extract_outer_quotes(linel[0]).strip()
-                            value = extract_outer_quotes(linel[1]).strip()
-                            result_dict[key] = value
-                            key = ""
-                            value = ""
-                        except:
-                            pass
+                    value=line.strip()
+                    key=str(n)
+                    result_dict[key]=value
+                    key=""
+                    value=""
+                    n=n+1
                 with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
                     json.dump(result_dict, f, ensure_ascii=False, indent=4)
+                result_dict = {}
                 # os.remove(file_path)
                 print("txt成")
             except Exception as e:
@@ -266,7 +264,7 @@ for root, dirs, files in os.walk(directory):
         # elif file_path.endswith('.asset'):#处理asset文件
         #     os.remove(file_path)
         elif file_path.endswith('.json'):#处理json文件
-            # os.remove(file_path)
+            os.remove(file_path)
             continue
             try:
                 key_l = []#需要添加文件等信息。
@@ -310,7 +308,7 @@ for root, dirs, files in os.walk(directory):
                 with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
                     json.dump(result_dict, f, ensure_ascii=False, indent=4)
                 result_dict = {}
-                # os.remove(file_path)
+                os.remove(file_path)
                 print("json成")
             except Exception as e:
                 print("寄")
