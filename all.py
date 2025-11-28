@@ -6,53 +6,53 @@ import tools as tos
 import subprocess
 
 LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中，如果有组合数据，应该考虑用dict
-    'ChineseSimplified':('简体中文','zh_text'), # 如果需要语言重命名，或者打印语言信息，可以像这样把每个语言的设置拆成 tuple 来写。这个表的意义是建立语言的映射关系
-    'English':('英文','en_text'),
-    'French':('法语','fr_text'),
-    'German':('德语','de_text'),
-    'Italian':('意大利语','it_text'),
-    'Japanese':('日语','ja_text'),
-    'Korean':('韩语','ko_text'),
-    'Polish':('波兰语','pl'), # 填扩展字段里
-    'Portugues Portugal':('葡萄牙语','pt_text'),
-    'Russian':('俄语','ru_text'),
-    'Spanish (Spain)':('西班牙语','es_text'),
-    'Indonesia':('印尼语','id_text'),
+    'zh':('简体中文','zh_text'), # 如果需要语言重命名，或者打印语言信息，可以像这样把每个语言的设置拆成 tuple 来写。这个表的意义是建立语言的映射关系
+    'en':('英文','en_text'),
+    'fr':('法语','fr_text'),
+    'de':('德语','de_text'),
+    # 'Italian':('意大利语','it_text'),
+    'jp':('日语','ja_text'),
+    'ko':('韩语','ko_text'),
+    'pl':('波兰语','pl'), # 填扩展字段里
+    # 'Portugues Portugal':('葡萄牙语','pt_text'),
+    'ru':('俄语','ru_text'),
+    'es':('西班牙语','es_text'),
+    # 'Indonesia':('印尼语','id_text'),
     # 'nb':('挪威语','no'), # 填扩展字段里
     # 'gre':('希腊语','el'), # 填扩展字段里
     # 'fi':('芬兰语','fi'), # 填扩展字段里
     # 'epo':('世界语','eo_text'),
     # 'nl':('荷兰语','nl_text'),
-    'ChineseTraditional':('繁体中文','cht_text'),
-    'Vietnamese':('越南语','vi_text'),
-    'Ukrainian':('乌克兰语','uk'), # 填扩展字段里
-    'Turkish':('土耳其语','tr'), # 填扩展字段里
-    'Thai':('泰语','th_text'),
-    'Serbian (Latin)':('塞尔维亚语(拉丁字母)','sr'), # 填扩展字段里
+    # 'ChineseTraditional':('繁体中文','cht_text'),
+    # 'Vietnamese':('越南语','vi_text'),
+    # 'Ukrainian':('乌克兰语','uk'), # 填扩展字段里
+    'tr':('土耳其语','tr'), # 填扩展字段里
+    # 'Thai':('泰语','th_text'),
+    # 'Serbian (Latin)':('塞尔维亚语(拉丁字母)','sr'), # 填扩展字段里
     # 'srb':('塞尔维亚语(西里尔字母)','sr2'),
     # 'JP':('另一种日语','jp2'), # 填扩展字段里
     # 'es-MX':('墨西哥语','esmx'),
-    'Czech':('捷克语','cs'),# 填扩展字段里
-    'Hungarian':('匈牙利语','hu'),# 填扩展字段里
-    'Arabic':('阿拉伯语','ar'),# 填扩展字段里
-    'Português-Brasil':('巴西葡语','pt_BR'),# 填扩展字段里
-    'Swedish':('瑞典语','sv'),# 填扩展字段里
+    # 'Czech':('捷克语','cs'),# 填扩展字段里
+    # 'Hungarian':('匈牙利语','hu'),# 填扩展字段里
+    # 'Arabic':('阿拉伯语','ar'),# 填扩展字段里
+    'pt':('巴西葡语','pt_BR'),# 填扩展字段里
+    # 'Swedish':('瑞典语','sv'),# 填扩展字段里
     # 'da':('丹麦语','da'),# 填扩展字段里
-    'Belarusian':('白俄罗斯语','be'),# 填扩展字段里
+    # 'Belarusian':('白俄罗斯语','be'),# 填扩展字段里
     # 'ca':('加泰罗尼亚语','ca'),# 填扩展字段里
     # 'gl':('加利西亚语','gl'),# 填扩展字段里
     # 'lt':('立陶宛语','lt'),# 填扩展字段里
-    'Romanian':('罗马尼亚语','ro'),# 填扩展字段里
-    'Croatian':('克罗地亚语','hr'),# 填扩展字段里
-    'Slovak':('斯洛伐克语','sk'),# 填扩展字段里
+    # 'Romanian':('罗马尼亚语','ro'),# 填扩展字段里
+    # 'Croatian':('克罗地亚语','hr'),# 填扩展字段里
+    # 'Slovak':('斯洛伐克语','sk'),# 填扩展字段里
     # 'sl':('斯洛文尼亚语','sl'),# 填扩展字段里
-    'Bulgarian':('保加利亚语','bg'),# 填扩展字段里
-    'Filipino':('他加禄语','tl'),# 填扩展字段里
-    'Kazakh':('哈萨克语','kk'),# 填扩展字段里
-    'Persian':('波斯语','fa'),# 填扩展字段里
+    # 'Bulgarian':('保加利亚语','bg'),# 填扩展字段里
+    # 'Filipino':('他加禄语','tl'),# 填扩展字段里
+    # 'Kazakh':('哈萨克语','kk'),# 填扩展字段里
+    # 'Persian':('波斯语','fa'),# 填扩展字段里
 }
 mate_dir = Path(r"C:\files\sandbox\data")
-filename = "MiSide.jsonl"
+filename = "911Operator.jsonl"
 max_lines = 500000
 max_size = 512
 

@@ -3,7 +3,7 @@
 '''
 import os
 
-directory = r"D:\MNBVC备份"
+directory = r"C:\files\MNBVC备份"
 
 Bsize = 0
 for root, dirs, files in os.walk(directory):#获得总大小
