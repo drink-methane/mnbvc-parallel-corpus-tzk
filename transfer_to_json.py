@@ -6,10 +6,10 @@ import pysubs2
 # import sys
 # import struct
 # from charset_mnbvc import api
-# import re
+import re
 import shutil
 
-directory = r"C:\files\MNBVC\911Operator"
+directory = r"C:\files\MNBVC\MortalKombat1"
 
 def extract_outer_quotes(text):
     # 查找第一个双引号的位置
@@ -98,21 +98,27 @@ for root, dirs, files in os.walk(directory):
                 break
         elif file_path.endswith('.csv'):#处理csv文件
             try:
+                # continue
                 with open(file_path, 'r', encoding = "UTF-8") as f:# 读取.txt文件内容
                     content = f.read()#content是str！
                 lines = content.splitlines()#lines是包含每一行的一个列表
                 for line in lines:
-                    if line.count(",") >= 2:
+                    if line.count(",") >= 2 and line.endswith(","):
                         linel = line.split(",")
                         key = linel[0]
                         value = linel[1].strip()
+                        value = re.sub(r'\[.*?\]', '', value)#去除[]以及之间的内容。
+                        value = re.sub(r'\{.*?\}', '', value)#去除{以及之间的内容}。
+                        if "::" in value:
+                            valuel = value.split("::")
+                            value = valuel[1]
                         result_dict[key] = value# 将键值对添加到字典中
                 with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
                     json.dump(result_dict, f, ensure_ascii=False, indent=4)
                 # os.remove(file_path)
                 print("csv成")
             except Exception as e:
-                print("寄")
+                print("寄", e)
                 print(file_path)
                 break
         elif file_path.endswith('.ssa'):#处理ssa文件
@@ -265,7 +271,7 @@ for root, dirs, files in os.walk(directory):
         #     os.remove(file_path)
         elif file_path.endswith('.json'):#处理json文件
             # os.remove(file_path)
-            # continue
+            continue
             try:
                 result_dict = {}
                 with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
