@@ -100,22 +100,22 @@ def seperate(source, target):
             if "." in filename:
                 name = filename.split(".")[0]
                 lan = name.split("_")[-1]
-                newfilename = "_".join(name.split("_")[:-2]) + ".json"
+                newfilename = name.split("_")[0] + ".json"
             else:
                 lan = filename.split("_")[-1]
                 newfilename = "_".join(name.split("_")[:-2]) + ".json"
-            fintarget = os.path.join(target, lan, newfilename)
-            sectarget = os.path.join(target, lan)
+            fintarget = os.path.join(source, lan, newfilename)
+            sectarget = os.path.join(source, lan)
             if not os.path.exists(sectarget):
                 os.makedirs(sectarget)
             print(fintarget)
             shutil.copy(file_path, fintarget)
     return 0
 
-source = r"C:\files\MNBVC\RiichiCity"
+source = r"C:\files\MNBVC\ZAKO_NO_AHIRU\ZAKO_NO_AHIRU"
 target = r"C:\files\sandbox\data"
 # to_the_out_folder(source)
-# different_folder(source, target)
-same_folder(source, target)
+different_folder(source, target)
+# same_folder(source, target)
 # do(source, target)
 # seperate(source, target)

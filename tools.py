@@ -184,3 +184,26 @@ def readfile(path, type, encl=None):#读取一个文件内容
         except:
             pass
     print("read fail", path)
+
+def pro_json(content, key_l):
+    '''
+    content: 得到的内容。
+    key_l: 一个列表，用于生成最后文件当中每一个键值对的key。
+    用来处理一个列表或者字典。
+    '''
+    global result_dict
+    key = '_'.join(key_l)
+    if isinstance(content, str) and not bool(re.match(r'^[+-]?(\d+(\.\d*)?|\.\d+)$', content)):#不是纯数字
+        result_dict[key.strip()] = content.strip()
+    elif isinstance(content, list):
+        i = 0
+        for item in content:
+            keyteml = key_l + [str(i)]
+            i+=1
+            pro_json(item, keyteml)
+    elif isinstance(content, dict):
+        for key in content.keys():
+            keyteml = []
+            keyteml = key_l + [key]#这样可以得到一个新列表，否则只会在原列表上操作。
+            pro_json(content[key], keyteml)
+    return 0

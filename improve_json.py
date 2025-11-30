@@ -66,7 +66,7 @@ def process_file_batch(file_batch):
     return success_count, len(file_batch)
 
 def main():
-    directory = r"D:\sandbox\data"
+    directory = r"C:\files\MNBVC\ZAKO_NO_AHIRU\ZAKO_NO_AHIRU"
     json_files = []
 
     print("正在扫描JSON文件...")

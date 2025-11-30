@@ -9,7 +9,7 @@ import pysubs2
 import re
 import shutil
 
-directory = r"C:\files\MNBVC\RiichiCity\RiichiCity"
+directory = r"C:\files\MNBVC\ZAKO_NO_AHIRU\ZAKO_NO_AHIRU"
 
 def extract_outer_quotes(text):
     # 查找第一个双引号的位置
@@ -297,17 +297,37 @@ for root, dirs, files in os.walk(directory):
                 break
         elif file_path.endswith('.json'):#处理json文件
             # os.remove(file_path)
-            continue
+            # continue
             try:
                 result_dict = {}
                 with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
                     content = json.load(f)
-                for ke in content:
-                    if "lang" in ke:
-                        content[ke]=""
+                def pro_json(content, key_l):
+                    '''
+                    content: 得到的内容。
+                    key_l: 一个列表，用于生成最后文件当中每一个键值对的key。
+                    用来处理一个列表或者字典。
+                    '''
+                    global result_dict
+                    key = '_'.join(key_l)
+                    if isinstance(content, str) and not bool(re.match(r'^[+-]?(\d+(\.\d*)?|\.\d+)$', content)):#不是纯数字
+                        result_dict[key.strip()] = content.strip()
+                    elif isinstance(content, list):
+                        i = 0
+                        for item in content:
+                            keyteml = key_l + [str(i)]
+                            i+=1
+                            pro_json(item, keyteml)
+                    elif isinstance(content, dict):
+                        for key in content.keys():
+                            keyteml = []
+                            keyteml = key_l + [key]#这样可以得到一个新列表，否则只会在原列表上操作。
+                            pro_json(content[key], keyteml)
+                    return 0
+                pro_json(content, [])
                 os.remove(file_path)
                 with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
-                    json.dump(content, f, ensure_ascii=False, indent=4)
+                    json.dump(result_dict, f, ensure_ascii=False, indent=4)
                 result_dict = {}
                 # os.remove(file_path)
                 print("json成")
