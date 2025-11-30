@@ -112,10 +112,10 @@ def seperate(source, target):
             shutil.copy(file_path, fintarget)
     return 0
 
-source = r"C:\files\MNBVC\MortalKombat1"
+source = r"C:\files\MNBVC\RiichiCity"
 target = r"C:\files\sandbox\data"
 # to_the_out_folder(source)
-different_folder(source, target)
-# same_folder(source, target)
+# different_folder(source, target)
+same_folder(source, target)
 # do(source, target)
 # seperate(source, target)

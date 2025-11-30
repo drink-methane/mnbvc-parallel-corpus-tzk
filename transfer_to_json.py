@@ -9,7 +9,7 @@ import pysubs2
 import re
 import shutil
 
-directory = r"C:\files\MNBVC\MortalKombat1"
+directory = r"C:\files\MNBVC\RiichiCity\RiichiCity"
 
 def extract_outer_quotes(text):
     # 查找第一个双引号的位置
@@ -148,7 +148,7 @@ for root, dirs, files in os.walk(directory):
                 os.remove(file_path)
                 print("ass成")
             except Exception as e:
-                print("寄")
+                print("寄", e)
                 print(file_path)
                 break
         elif file_path.endswith('.sub'):#处理sub文件
@@ -269,6 +269,32 @@ for root, dirs, files in os.walk(directory):
             pass
         # elif file_path.endswith('.asset'):#处理asset文件
         #     os.remove(file_path)
+        elif file_path.endswith('.lua'):#处理lua文件
+            try:
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    content = file.read().strip()
+                table_start = content.find('{')
+                table_end = content.rfind('}')
+                if table_start != -1 and table_end != -1:
+                    table_content = content[table_start + 1:table_end].strip()
+                else:
+                    raise ValueError("Invalid Lua table format")
+
+                # Use regex to find all key = [[value]], pairs, allowing multiline values
+                pattern = r'(\w+)\s*=\s*\[\[(.*?)\]\],'
+                matches = re.findall(pattern, table_content, re.DOTALL)
+
+                # Create dictionary from matches
+                result_dict = {key.strip(): value.strip() for key, value in matches}
+                    
+                with open(json_file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
+                    json.dump(result_dict, f, ensure_ascii=False, indent=4)
+                os.remove(file_path)
+                print("lua成")
+            except Exception as e:
+                print("寄", e)
+                print(file_path)
+                break
         elif file_path.endswith('.json'):#处理json文件
             # os.remove(file_path)
             continue
