@@ -3,42 +3,36 @@ import os
 from collections import defaultdict
 
 # 输入数据
-file_path = r"D:\MNBVC\Mirror1\TextAsset\Sys_Localization"
+file_path = r"C:\files\MNBVC\PEAK\SerializedTermsData.json"
 with open(file_path, 'r', encoding = "UTF-8") as f:# 读取文件内容
-    content = f.read()
-data = content
+    content = json.load(f)
+# data = content
 
-# 解析数据
-lines = data.split('\n')
-headers = lines[0].split('\t')
-languages = headers[4:]  # 从第5列开始是语言列
+languages = content["CURRENT_LANGUAGE"]
+content["CURRENT_LANGUAGE"] = []
 
 # 为每种语言创建字典
 language_data = {lang: defaultdict(dict) for lang in languages}
 
 # 处理数据行（跳过前两行标题行）
-for line in lines[2:]:
-    if not line.strip():
-        continue
-    parts = line.split('\t')
-    entry_id = parts[0]
-    className = parts[1]
-    mapProperties = parts[2]
-    key = parts[3]
-    
+for key in content:
+    parts = content[key]
     # 为每种语言添加条目
-    for i, lang in enumerate(languages):
-        text = parts[4 + i]
-        language_data[lang][entry_id] = text
+    if len(parts)<len(languages):
+        continue
+    for i in range(len(languages)):
+        lang = languages[i]
+        text = parts[i]
+        language_data[lang][key] = text
 
 # 为每种语言创建文件夹和JSON文件
 for lang, data_dict in language_data.items():
     # 创建语言文件夹
-    lang_dir = os.path.join(r"D:\MNBVC\Mirror1\TextAsset", lang)
+    lang_dir = os.path.join(r"C:\files\MNBVC\PEAK", lang)
     os.makedirs(lang_dir, exist_ok=True)
     
     # 创建JSON文件路径
-    json_path = os.path.join(r"D:\MNBVC\Mirror1\TextAsset", lang_dir, "Sys_Localization.json")
+    json_path = os.path.join(r"C:\files\MNBVC\PEAK", lang_dir, "111.json")
     
     # 写入JSON文件
     with open(json_path, 'w', encoding='utf-8') as f:
