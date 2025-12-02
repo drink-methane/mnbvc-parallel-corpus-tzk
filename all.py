@@ -7,17 +7,17 @@ import subprocess
 
 LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中，如果有组合数据，应该考虑用dict
     'zh':('简体中文','zh_text'), # 如果需要语言重命名，或者打印语言信息，可以像这样把每个语言的设置拆成 tuple 来写。这个表的意义是建立语言的映射关系
-    'zht':('繁体中文','cht_text'),
+    # 'zht':('繁体中文','cht_text'),
     'en':('英文','en_text'),
-    'fr':('法语','fr_text'),
-    'de':('德语','de_text'),
-    'it':('意大利语','it_text'),
-    'jp':('日语','ja_text'),
-    'ko':('韩语','ko_text'),
-    'pl':('波兰语','pl'), # 填扩展字段里
+    # 'fr':('法语','fr_text'),
+    # 'de':('德语','de_text'),
+    # 'it':('意大利语','it_text'),
+    # 'jp':('日语','ja_text'),
+    # 'ko':('韩语','ko_text'),
+    # 'pl':('波兰语','pl'), # 填扩展字段里
     # 'Portugues Portugal':('葡萄牙语','pt_text'),
-    'ru':('俄语','ru_text'),
-    'es':('西班牙语','es_text'),
+    # 'ru':('俄语','ru_text'),
+    # 'es':('西班牙语','es_text'),
     # 'Indonesia':('印尼语','id_text'),
     # 'nb':('挪威语','no'), # 填扩展字段里
     # 'gre':('希腊语','el'), # 填扩展字段里
@@ -25,8 +25,8 @@ LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中�
     # 'epo':('世界语','eo_text'),
     # 'nl':('荷兰语','nl_text'),
     # 'Vietnamese':('越南语','vi_text'),
-    'uk':('乌克兰语','uk'), # 填扩展字段里
-    'tr':('土耳其语','tr'), # 填扩展字段里
+    # 'uk':('乌克兰语','uk'), # 填扩展字段里
+    # 'tr':('土耳其语','tr'), # 填扩展字段里
     # 'Thai':('泰语','th_text'),
     # 'Serbian (Latin)':('塞尔维亚语(拉丁字母)','sr'), # 填扩展字段里
     # 'srb':('塞尔维亚语(西里尔字母)','sr2'),
@@ -35,7 +35,7 @@ LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中�
     # 'Czech':('捷克语','cs'),# 填扩展字段里
     # 'Hungarian':('匈牙利语','hu'),# 填扩展字段里
     # 'ar':('阿拉伯语','ar'),# 填扩展字段里
-    'pt':('巴西葡语','pt_BR'),# 填扩展字段里
+    # 'pt':('巴西葡语','pt_BR'),# 填扩展字段里
     # 'Swedish':('瑞典语','sv'),# 填扩展字段里
     # 'da':('丹麦语','da'),# 填扩展字段里
     # 'Belarusian':('白俄罗斯语','be'),# 填扩展字段里
@@ -50,10 +50,10 @@ LANGUAGES = { # 将需要按语言写死的部分，全部放到这一个表中�
     # 'Filipino':('他加禄语','tl'),# 填扩展字段里
     # 'Kazakh':('哈萨克语','kk'),# 填扩展字段里
     # 'Persian':('波斯语','fa'),# 填扩展字段里
-    'es-419':('西班牙语（拉丁美洲）','es-419'),# 填扩展字段里
+    # 'es-419':('西班牙语（拉丁美洲）','es-419'),# 填扩展字段里
 }
-mate_dir = Path(r"C:\files\MNBVC\PEAK")
-filename = "PEAK.jsonl"
+mate_dir = Path(r"C:\files\MNBVC\彼方的她localization_2025_4_23")
+filename = "Aliya.jsonl"
 max_lines = 500000
 max_size = 512
 

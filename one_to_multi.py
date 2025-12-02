@@ -1,38 +1,30 @@
 import json
 import os
 from collections import defaultdict
+import tools as tos
 
 # 输入数据
-file_path = r"C:\files\MNBVC\PEAK\SerializedTermsData.json"
-with open(file_path, 'r', encoding = "UTF-8") as f:# 读取文件内容
-    content = json.load(f)
-# data = content
-
-languages = content["CURRENT_LANGUAGE"]
-content["CURRENT_LANGUAGE"] = []
+file_path = r"C:\files\MNBVC\彼方的她localization_2025_4_23\localization_2025_4_23.txt"
+content = tos.readfile(file_path, ".txt", encl=["utf-8"])
+data = content.splitlines()
+languages = ["zh", "en", "zh2"]
 
 # 为每种语言创建字典
 language_data = {lang: defaultdict(dict) for lang in languages}
 
-# 处理数据行（跳过前两行标题行）
-for key in content:
-    parts = content[key]
-    # 为每种语言添加条目
-    if len(parts)<len(languages):
-        continue
-    for i in range(len(languages)):
-        lang = languages[i]
-        text = parts[i]
-        language_data[lang][key] = text
+for i in data:
+    datal = i.split(",")
+    for j in range(3):
+        language_data[languages[j]][datal[0]] = datal[j+2]
 
 # 为每种语言创建文件夹和JSON文件
 for lang, data_dict in language_data.items():
     # 创建语言文件夹
-    lang_dir = os.path.join(r"C:\files\MNBVC\PEAK", lang)
+    lang_dir = os.path.join(r"C:\files\MNBVC\彼方的她localization_2025_4_23", lang)
     os.makedirs(lang_dir, exist_ok=True)
     
     # 创建JSON文件路径
-    json_path = os.path.join(r"C:\files\MNBVC\PEAK", lang_dir, "111.json")
+    json_path = os.path.join(r"C:\files\MNBVC\彼方的她localization_2025_4_23", lang_dir, "111.json")
     
     # 写入JSON文件
     with open(json_path, 'w', encoding='utf-8') as f:
