@@ -177,7 +177,7 @@ def readfile(path, type, encl=None):#读取一个文件内容
             if type == ".json":
                 with open(path, 'r', encoding=encodin) as f:
                     content = json.load(f)
-            elif type == ".txt":
+            else:
                 with open(path, 'r', encoding = encodin) as f:# 读取.txt文件内容
                     content = f.read()#content是str！
             return content

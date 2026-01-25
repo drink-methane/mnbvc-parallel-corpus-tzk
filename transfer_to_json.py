@@ -9,7 +9,7 @@ import pysubs2
 import re
 import shutil
 
-directory = r"C:\files\MNBVC\PEAK"
+directory = r"C:\files\MNBVC\774181_RhythmDoctor\dialogues"
 
 def extract_outer_quotes(text):
     # 查找第一个双引号的位置
@@ -303,10 +303,22 @@ for root, dirs, files in os.walk(directory):
                 with open(file_path, 'r', encoding = encodin) as f:# 读取.txt文件内容
                     content = json.load(f)
                 os.remove(file_path)
+                content=content["root"]
+                content=content[2]
+                for k1 in content:
+                    if isinstance(content[k1], list):
+                        c1=content[k1]
+                        i1=0
+                        for c2 in c1:
+                            i1=i1+1
+                            if isinstance(c2, str):
+                                if ":" in c2:
+                                    value=re.sub(r'<.*?>', '', re.sub(r'\[.*?\]', '', c2.split(":")[1]))
+                                    key=k1+str(i1)
+                                    result_dict[key]=value
                 with open(file_path, 'w', encoding='utf-8') as f:# 将数据写入新的.json文件
                     json.dump(result_dict, f, ensure_ascii=False, indent=4)
                 result_dict = {}
-                # os.remove(file_path)
                 print("json成")
             except Exception as e:
                 print("寄", e)

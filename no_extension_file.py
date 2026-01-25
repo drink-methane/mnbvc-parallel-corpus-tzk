@@ -6,7 +6,7 @@
 import os
 # import argparse
 
-directory = r"C:\files\MNBVC\911Operator"
+directory = r"C:\files\MNBVC\774181_RhythmDoctor\dialogues"
 
 for root, dirs, files in os.walk(directory):
     for file in files:

@@ -108,11 +108,10 @@ def seperate(source, target):
             sectarget = os.path.join(source, lan)
             if not os.path.exists(sectarget):
                 os.makedirs(sectarget)
-            print(fintarget)
             shutil.copy(file_path, fintarget)
     return 0
 
-source = r"C:\files\MNBVC\ZAKO_NO_AHIRU\ZAKO_NO_AHIRU"
+source = r"C:\files\MNBVC\774181_RhythmDoctor\dialogues"
 target = r"C:\files\sandbox\data"
 # to_the_out_folder(source)
 different_folder(source, target)
