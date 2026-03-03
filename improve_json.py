@@ -79,7 +79,7 @@ def main():
     print(f"找到 {len(json_files)} 个JSON文件，开始处理...")
 
     # 设置批处理大小（每批处理xx个文件）
-    batch_size = 24
+    batch_size = 4
     file_batches = [json_files[i:i + batch_size] 
                     for i in range(0, len(json_files), batch_size)]
 
