@@ -1,4 +1,5 @@
 import json
+import json5
 import copy
 from typing import List, Tuple, Union, Iterable, Sequence, Mapping
 from types import NoneType
@@ -153,13 +154,15 @@ def del_specific_filetype(folder, tartype):#删除某一类型文件
                 os.remove(file_path)
     return 0
 
-def readfile(path, type, encl=None):#读取一个文件内容
+def readfile(path, type=None, encl=None):#读取一个文件内容
     '''
     encl:encoding list
     '''
     if encl == None:
         encl = [
             'utf-8',
+            'utf-8-sig',
+            'utf-16',
             'gbk',
             'gb2312',
             'gb18030',
@@ -167,16 +170,20 @@ def readfile(path, type, encl=None):#读取一个文件内容
             'latin-1',
             'iso-8859-1',
             'cp1252',
-            'utf-16',
             'utf-32',
             'Windows-1250',
-            'utf-8-sig'
+            "shift_jis",
+            "ASCII",
         ]
+    if type == None:
+        if "." in path.split("\\")[-1]:
+            type = "." + path.split(".")[-1]
     for encodin in encl:
         try:
             if type == ".json":
                 with open(path, 'r', encoding=encodin) as f:
-                    content = json.load(f)
+                    malformed_content = f.read()
+                content = json5.loads(malformed_content)
             else:
                 with open(path, 'r', encoding = encodin) as f:# 读取.txt文件内容
                     content = f.read()#content是str！

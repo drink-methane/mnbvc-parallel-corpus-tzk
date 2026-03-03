@@ -13,8 +13,11 @@ import stat
 def process_single_file(file_path):
     """处理单个文件的函数，用于线程池"""
     try:
-        extension="."+file_path.split(".")[-1]
-        content=tos.readfile(file_path, extension)
+        if "." in file_path.split("\\")[-1]:
+            extension = "." + file_path.split(".")[-1]
+        else:
+            extension = ""
+        content=tos.readfile(file_path)
         os.chmod(file_path, stat.S_IWRITE)#去除只读属性
         os.remove(file_path)
         if extension == ".json":
